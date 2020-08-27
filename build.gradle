@@ -1,3 +1,5 @@
+import java.text.MessageFormat
+
 plugins {
 	id 'fabric-loom' version '0.4-SNAPSHOT'
 	id 'maven-publish'
@@ -26,8 +28,8 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	modImplementation "net.adriantodt.fabricmc:FallFlyingLib:${project.ffl_version}"
-	include "net.adriantodt.fabricmc:FallFlyingLib:${project.ffl_version}"
+	modImplementation "net.adriantodt.fabricmc:fallflyinglib:${project.ffl_version}"
+	include "net.adriantodt.fabricmc:fallflyinglib:${project.ffl_version}"
 }
 
 processResources {
@@ -80,5 +82,17 @@ publishing {
 	repositories {
 		// uncomment to publish to the local maven
 		// mavenLocal()
+	}
+}
+
+task printInfo {
+	doLast {
+		System.out << MessageFormat.format(
+			'''----- BEGIN -----
+### Release Info
+This release was built for Minecraft **{0}**, with Fabric Loader **{1}**, Fabric API **{2}** and FallFlyingLib **{3}**.
+------ END ------''',
+			project.minecraft_version, project.loader_version, project.fabric_version, project.ffl_version,
+		)
 	}
 }
